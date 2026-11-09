@@ -1,0 +1,4 @@
+ANNA Math Match Netlify update package
+CACHE_NAME: anna-math-cache-2.0.0-025eb9527f -> anna-math-cache-2.1.0-mult-ba42d10a42
+Injected: multiplication chart module into index.html
+Do not nest this folder inside another dist/ when uploading to Netlify.
