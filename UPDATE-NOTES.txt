@@ -1,0 +1,5 @@
+数学消消乐静态更新说明
+CACHE_NAME: anna-math-cache-2.2.0-groups-704592f326 -> anna-math-cache-2.3.0-levels-859ed44ca3
+新增关卡：100以内加减、有余数除法、分数四则运算。题目逻辑在 src/new-levels.mjs。
+乘法约定仍是 a×b 表示 b 组、每组 a 个。访客名称仍是数学消消乐。本地存储键未改。
+上传时使用站点根目录，不要再套一层 dist。

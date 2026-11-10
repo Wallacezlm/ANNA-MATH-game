@@ -1,0 +1,400 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+<!-- This site is hosted on Netlify. Anyone can build and deploy a site
+     like this one for free: https://netlify.new/?utm_campaign=loops&utm_source=ai-legible&utm_medium=owned&utm_content=comment&utm_id=90484256-6725-4e0d-8aa0-fcca2b0efcee
+     Netlify hosting facts for this site: static/SSR served via Netlify Edge. -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" href="/favicon.svg" />
+    <link rel="manifest" href="/manifest.json" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="数学消消乐" />
+    <meta name="theme-color" content="#10B981" />
+    <meta name="description" content="专为6-12岁小学生设计的数学消消乐游戏，包含加减乘除、有余数除法、分数运算、永久翻牌与错题自动收集" />
+    <title>数学消消乐</title>
+    <script>
+      if ('serviceWorker' in navigator) {
+        var hadController = !!navigator.serviceWorker.controller;
+        navigator.serviceWorker.addEventListener('controllerchange', function () {
+          if (!hadController || sessionStorage.getItem('sw-updated-once')) return;
+          sessionStorage.setItem('sw-updated-once', '1');
+          location.reload();
+        });
+      }
+    </script>
+    <script type="module" src="/src/new-levels.mjs"></script>
+    <script type="module" crossorigin src="/assets/index-2_2UvlOz.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-0siVSk6-.css">
+  </head>
+  <body class="bg-slate-50 text-slate-800 antialiased selection:bg-emerald-200">
+    <div id="root"></div>
+  
+
+<!-- 乘法百数板模块与入口按钮 -->
+<style id="anna-mc-fab-style">
+#anna-mc-fab{position:fixed;right:14px;bottom:14px;z-index:9998;min-height:52px;padding:12px 16px;border:0;border-radius:999px;background:#10B981;color:#fff;font:700 16px/1.2 system-ui,-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;box-shadow:0 10px 28px rgba(16,185,129,.45);cursor:pointer;touch-action:manipulation}
+#anna-mc-fab:active{transform:scale(.96)}
+</style>
+<button type="button" id="anna-mc-fab" aria-label="打开乘法百数板">✖️ 乘法百数板</button>
+
+<style id="anna-mc-style">
+#anna-mc-root{position:fixed;inset:0;z-index:10000;display:flex;align-items:center;justify-content:center;padding:max(12px,env(safe-area-inset-top,0px)) max(12px,env(safe-area-inset-right,0px)) max(12px,env(safe-area-inset-bottom,0px)) max(12px,env(safe-area-inset-left,0px));background:rgba(15,23,42,.58);color:#0f172a;font-family:system-ui,-apple-system,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;line-height:1.5}
+#anna-mc-root[hidden],#anna-mc-root [hidden]{display:none!important}
+#anna-mc-root *{box-sizing:border-box}
+#anna-mc-root button,#anna-mc-root input{font:inherit}
+#anna-mc-root button{min-height:44px;cursor:pointer;touch-action:manipulation}
+#anna-mc-root button:focus-visible,#anna-mc-root input:focus-visible{outline:3px solid #34d399;outline-offset:2px}
+#anna-mc-root button:disabled{cursor:default;opacity:.6}
+.anna-mc-panel{width:min(1180px,100%);max-height:calc(100dvh - env(safe-area-inset-top,0px) - env(safe-area-inset-bottom,0px) - 24px);display:flex;flex-direction:column;overflow:hidden;background:#f8fafc;border:1px solid #cbd5e1;border-radius:20px;box-shadow:0 24px 70px rgba(15,23,42,.3)}
+.anna-mc-header{display:flex;align-items:center;gap:12px;padding:14px 18px;background:#fff;border-bottom:1px solid #e2e8f0}
+.anna-mc-header>div{flex:1}
+.anna-mc-title{margin:0;font-size:clamp(22px,3vw,30px);line-height:1.2;color:#065f46}
+.anna-mc-subtitle{margin:4px 0 0;color:#64748b;font-size:14px}
+.anna-mc-close{flex:0 0 44px;width:44px;padding:0;border:0;border-radius:12px;background:#f1f5f9;color:#334155;font-size:28px;line-height:1}
+.anna-mc-main{overflow:auto;padding:14px 18px 20px}
+.anna-mc-toolbar{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:12px}
+.anna-mc-modes{display:flex;gap:6px;padding:4px;background:#e2e8f0;border-radius:14px}
+.anna-mc-mode{min-width:92px;padding:8px 18px;border:0;border-radius:11px;background:transparent;color:#334155;font-weight:700}
+.anna-mc-mode[aria-pressed="true"]{background:#10B981;color:#fff;box-shadow:0 2px 6px rgba(15,23,42,.15)}
+.anna-mc-board-help{margin:0;color:#475569;font-weight:600}
+.anna-mc-layout{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(290px,.8fr);gap:16px;align-items:start}
+.anna-mc-board-card,.anna-mc-detail{min-width:0;background:#fff;border:1px solid #e2e8f0;border-radius:16px}
+.anna-mc-board-card{padding:10px}
+.anna-mc-board-scroll{max-width:100%;max-height:62vh;overflow:auto;border-radius:10px;overscroll-behavior:contain}
+.anna-mc-table{width:530px;min-width:530px;border-collapse:separate;border-spacing:3px;table-layout:fixed;text-align:center}
+.anna-mc-table th{width:44px;min-width:44px;height:44px;padding:0;border-radius:9px;background:#f1f5f9;color:#334155;font-weight:800}
+.anna-mc-table thead th{position:sticky;top:0;z-index:3}
+.anna-mc-table tbody th{position:sticky;left:0;z-index:2}
+.anna-mc-table .anna-mc-corner{left:0;z-index:5;background:#dcfce7;color:#047857;font-size:22px}
+.anna-mc-table td{width:44px;height:44px;padding:0}
+.anna-mc-cell{position:relative;display:flex;align-items:center;justify-content:center;width:44px;height:44px;padding:0;border:1px solid #e2e8f0;border-radius:9px;background:#fff;color:#334155;font-size:15px;font-weight:700}
+.anna-mc-cell:hover{background:#f0fdf4;border-color:#6ee7b7}
+.anna-mc-cell.anna-mc-line{background:#ecfdf5;border-color:#a7f3d0}
+.anna-mc-cell.anna-mc-selected{z-index:1;background:#10B981;border-color:#047857;color:#fff;box-shadow:0 0 0 3px #a7f3d0}
+.anna-mc-head-active{background:#10B981!important;color:#fff!important}
+#anna-mc-root.anna-mc-is-practice .anna-mc-product{display:none}
+#anna-mc-root.anna-mc-is-practice .anna-mc-cell::after{content:"?";font-size:19px;font-weight:800}
+.anna-mc-detail{padding:16px}
+.anna-mc-empty{margin:12px 0;color:#64748b;font-size:17px}
+.anna-mc-groups{margin:0 0 6px;color:#475569;font-size:18px;font-weight:700}
+.anna-mc-equation{margin:0 0 12px;color:#065f46;font-size:clamp(28px,4vw,38px);font-weight:850;overflow-wrap:anywhere}
+.anna-mc-note{padding:9px 11px;margin:0 0 12px;border-radius:10px;background:#ecfdf5;color:#047857;font-weight:700}
+.anna-mc-practice{padding:12px;margin-bottom:12px;border-radius:12px;background:#f1f5f9}
+.anna-mc-practice label{display:block;margin-bottom:6px;color:#334155;font-weight:700}
+.anna-mc-answer-row{display:flex;gap:8px;align-items:stretch}
+#anna-mc-answer{width:110px;min-height:48px;padding:6px 10px;border:2px solid #94a3b8;border-radius:10px;background:#fff;color:#0f172a;font-size:24px;text-align:center}
+.anna-mc-primary,.anna-mc-secondary,.anna-mc-launcher{min-height:44px;padding:9px 15px;border-radius:11px;font-weight:750}
+.anna-mc-primary{border:1px solid #10B981;background:#10B981;color:#fff}
+.anna-mc-secondary{border:1px solid #94a3b8;background:#fff;color:#334155}
+.anna-mc-hint{width:100%;margin-top:8px}
+.anna-mc-feedback{min-height:24px;margin:8px 0 0;color:#475569;font-weight:650}
+.anna-mc-feedback.anna-mc-good{color:#047857}
+.anna-mc-repeat{padding:10px 12px;margin:0 0 12px;border-radius:10px;background:#f0fdf4;color:#166534;font-size:17px;font-weight:650;overflow-wrap:anywhere}
+.anna-mc-dots-title{margin:10px 0 8px;color:#475569;font-weight:700}
+.anna-mc-dots{display:flex;flex-wrap:wrap;align-items:flex-start;gap:8px;max-width:100%;overflow:hidden}
+.anna-mc-dot-group{display:grid;grid-template-columns:repeat(5,8px);grid-auto-rows:8px;gap:3px;flex:0 0 auto;padding:7px;border:1px solid #6ee7b7;border-radius:9px;background:#f0fdf4}
+.anna-mc-dot{width:8px;height:8px;border-radius:50%;background:#10B981}
+.anna-mc-dots.anna-mc-hint-dots .anna-mc-dot{background:#a7f3d0;border:1px solid #059669}
+.anna-mc-actions{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}
+.anna-mc-sr{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.anna-mc-launcher{border:1px solid #059669;background:#10B981;color:#fff;font-family:system-ui,-apple-system,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif}
+@media(max-width:800px){.anna-mc-panel{border-radius:15px}.anna-mc-header{padding:12px 12px 11px}.anna-mc-main{padding:10px}.anna-mc-layout{grid-template-columns:1fr}.anna-mc-board-scroll{max-height:55vh}.anna-mc-detail{padding:14px}}
+</style>
+<div id="anna-mc-root" hidden>
+  <section class="anna-mc-panel" role="dialog" aria-modal="true" aria-labelledby="anna-mc-title">
+    <header class="anna-mc-header">
+      <div>
+        <h2 class="anna-mc-title" id="anna-mc-title">乘法百数板</h2>
+        <p class="anna-mc-subtitle">a×b 表示 b 组、每组 a 个。行是每组个数，列是组数。</p>
+      </div>
+      <button type="button" class="anna-mc-close" id="anna-mc-close" aria-label="关闭乘法百数板">×</button>
+    </header>
+    <div class="anna-mc-main">
+      <div class="anna-mc-toolbar">
+        <div class="anna-mc-modes" role="group" aria-label="选择模式">
+          <button type="button" class="anna-mc-mode" data-mode="explore" aria-pressed="true">探索</button>
+          <button type="button" class="anna-mc-mode" data-mode="practice" aria-pressed="false">练习</button>
+        </div>
+        <p class="anna-mc-board-help" id="anna-mc-board-help"></p>
+      </div>
+      <div class="anna-mc-layout">
+        <section class="anna-mc-board-card" aria-label="十乘十乘法表">
+          <div class="anna-mc-board-scroll">
+            <table class="anna-mc-table" id="anna-mc-board"></table>
+          </div>
+        </section>
+        <aside class="anna-mc-detail">
+          <p class="anna-mc-empty" id="anna-mc-empty"></p>
+          <div id="anna-mc-content" hidden>
+            <p class="anna-mc-groups" id="anna-mc-groups"></p>
+            <p class="anna-mc-equation" id="anna-mc-equation"></p>
+            <p class="anna-mc-note" id="anna-mc-note" hidden></p>
+            <div class="anna-mc-actions">
+              <button type="button" class="anna-mc-secondary" id="anna-mc-swap" hidden></button>
+              <button type="button" class="anna-mc-secondary" id="anna-mc-new" hidden>再来一题</button>
+            </div>
+            <form class="anna-mc-practice" id="anna-mc-practice" hidden>
+              <label for="anna-mc-answer">你的答案</label>
+              <div class="anna-mc-answer-row">
+                <input id="anna-mc-answer" type="text" inputmode="numeric" pattern="[0-9]*" maxlength="3" autocomplete="off" aria-describedby="anna-mc-feedback">
+                <button type="submit" class="anna-mc-primary" id="anna-mc-check">检查答案</button>
+              </div>
+              <button type="button" class="anna-mc-secondary anna-mc-hint" id="anna-mc-hint">看分组提示</button>
+              <p class="anna-mc-feedback" id="anna-mc-feedback" role="status" aria-live="polite"></p>
+            </form>
+            <p class="anna-mc-repeat" id="anna-mc-repeat" hidden></p>
+            <p class="anna-mc-dots-title" id="anna-mc-dots-title" hidden></p>
+            <div class="anna-mc-dots" id="anna-mc-dots" hidden></div>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </section>
+</div>
+<script id="anna-mc-script">
+(function(){
+  'use strict';
+  var root=document.getElementById('anna-mc-root');
+  var board=document.getElementById('anna-mc-board');
+  var closeButton=document.getElementById('anna-mc-close');
+  var empty=document.getElementById('anna-mc-empty');
+  var content=document.getElementById('anna-mc-content');
+  var groupsText=document.getElementById('anna-mc-groups');
+  var equation=document.getElementById('anna-mc-equation');
+  var note=document.getElementById('anna-mc-note');
+  var practice=document.getElementById('anna-mc-practice');
+  var answer=document.getElementById('anna-mc-answer');
+  var checkButton=document.getElementById('anna-mc-check');
+  var hintButton=document.getElementById('anna-mc-hint');
+  var feedback=document.getElementById('anna-mc-feedback');
+  var repeat=document.getElementById('anna-mc-repeat');
+  var dotsTitle=document.getElementById('anna-mc-dots-title');
+  var dots=document.getElementById('anna-mc-dots');
+  var swapButton=document.getElementById('anna-mc-swap');
+  var newButton=document.getElementById('anna-mc-new');
+  var boardHelp=document.getElementById('anna-mc-board-help');
+  var modeButtons=Array.prototype.slice.call(root.querySelectorAll('[data-mode]'));
+  var mode='explore',r=0,c=0,answered=false,hint=false;
+  var feedbackText='',feedbackGood=false,noteText='',lastFocus=null;
+
+  try{
+    var saved=JSON.parse(localStorage.getItem('anna_multiplication_chart_v1')||'{}');
+    if(saved.mode==='practice')mode='practice';
+  }catch(ignore){}
+
+  var html='<caption class="anna-mc-sr">行是每组个数，列是组数。a×b 表示 b 组、每组 a 个，格内是乘积</caption><thead><tr><th class="anna-mc-corner" scope="col" aria-label="每组个数乘以组数">×</th>';
+  var i,j;
+  for(j=1;j<=10;j++)html+='<th scope="col" data-col-head="'+j+'" aria-label="'+j+'组">'+j+'</th>';
+  html+='</tr></thead><tbody>';
+  for(i=1;i<=10;i++){
+    html+='<tr><th scope="row" data-row-head="'+i+'" aria-label="每组'+i+'个">'+i+'</th>';
+    for(j=1;j<=10;j++){
+      html+='<td><button type="button" class="anna-mc-cell" data-r="'+i+'" data-c="'+j+'" aria-pressed="false"><span class="anna-mc-product">'+(i*j)+'</span></button></td>';
+    }
+    html+='</tr>';
+  }
+  board.innerHTML=html+'</tbody>';
+  var cells=Array.prototype.slice.call(board.querySelectorAll('.anna-mc-cell'));
+  var rowHeads=Array.prototype.slice.call(board.querySelectorAll('[data-row-head]'));
+  var colHeads=Array.prototype.slice.call(board.querySelectorAll('[data-col-head]'));
+
+  function renderDots(isHint){
+    dots.replaceChildren();
+    dots.classList.toggle('anna-mc-hint-dots',isHint);
+    dots.setAttribute('role','img');
+    dots.setAttribute('aria-label',isHint?c+'组，每组'+r+'个圆点的分组提示':c+'组，每组'+r+'个圆点，共'+(r*c)+'个圆点');
+    var fragment=document.createDocumentFragment();
+    for(var groupIndex=0;groupIndex<c;groupIndex++){
+      var group=document.createElement('span');
+      group.className='anna-mc-dot-group';
+      group.setAttribute('aria-hidden','true');
+      for(var dotIndex=0;dotIndex<r;dotIndex++){
+        var dot=document.createElement('span');
+        dot.className='anna-mc-dot';
+        group.appendChild(dot);
+      }
+      fragment.appendChild(group);
+    }
+    dots.appendChild(fragment);
+  }
+
+  function render(){
+    var hasSelection=!!r;
+    var showAnswer=hasSelection&&(mode==='explore'||answered);
+    var showHint=hasSelection&&mode==='practice'&&hint&&!answered;
+    root.classList.toggle('anna-mc-is-practice',mode==='practice');
+    boardHelp.textContent=mode==='practice'?'练习中，格内乘积已遮住':'点任意一格，立即查看答案与圆点分组';
+    modeButtons.forEach(function(button){
+      button.setAttribute('aria-pressed',String(button.dataset.mode===mode));
+    });
+    cells.forEach(function(button){
+      var br=Number(button.dataset.r),bc=Number(button.dataset.c);
+      var selected=br===r&&bc===c;
+      button.classList.toggle('anna-mc-line',hasSelection&&(br===r||bc===c));
+      button.classList.toggle('anna-mc-selected',selected);
+      button.setAttribute('aria-pressed',String(selected));
+      button.setAttribute('aria-label',mode==='practice'?br+'乘'+bc+'，选择这道题':br+'乘'+bc+'等于'+(br*bc));
+    });
+    rowHeads.forEach(function(head){head.classList.toggle('anna-mc-head-active',Number(head.dataset.rowHead)===r);});
+    colHeads.forEach(function(head){head.classList.toggle('anna-mc-head-active',Number(head.dataset.colHead)===c);});
+    empty.hidden=hasSelection;
+    content.hidden=!hasSelection;
+    empty.textContent=mode==='practice'?'点一格开始练习，或准备随机抽题。':'先在乘法表中点一格吧！';
+    if(!hasSelection)return;
+
+    groupsText.textContent=c+'组，每组'+r+'个';
+    equation.textContent=r+'×'+c+(showAnswer?'＝'+(r*c):'＝？');
+    note.hidden=!noteText;
+    note.textContent=noteText;
+    swapButton.hidden=r===c;
+    swapButton.textContent='看看 '+c+'×'+r;
+    newButton.hidden=mode!=='practice';
+    practice.hidden=mode!=='practice';
+    answer.disabled=answered;
+    checkButton.disabled=answered;
+    hintButton.disabled=answered||hint;
+    hintButton.textContent=hint&&!answered?'提示已显示':'看分组提示';
+    feedback.textContent=feedbackText;
+    feedback.classList.toggle('anna-mc-good',feedbackGood);
+
+    repeat.hidden=!showAnswer;
+    repeat.textContent=showAnswer?(c===1?'就是 '+r+'，只有 1 组。':Array(c).fill(r).join('＋')+'＝'+(r*c)):'';
+    dotsTitle.hidden=!(showAnswer||showHint);
+    dots.hidden=!(showAnswer||showHint);
+    if(showAnswer){
+      dotsTitle.textContent='圆点图：'+c+' 个独立分组，每框一组';
+      renderDots(false);
+    }else if(showHint){
+      dotsTitle.textContent='分组提示：每框一组，可以逐组数一数（暂不写乘积）';
+      renderDots(true);
+    }else{
+      dotsTitle.textContent='';
+      dots.replaceChildren();
+    }
+  }
+
+  function choose(nr,nc){
+    r=nr;c=nc;answered=false;hint=false;
+    feedbackText='';feedbackGood=false;noteText='';answer.value='';
+    render();
+  }
+
+  function randomProblem(){
+    var nr,nc;
+    do{
+      nr=1+Math.floor(Math.random()*10);
+      nc=1+Math.floor(Math.random()*10);
+    }while(r&&nr===r&&nc===c);
+    choose(nr,nc);
+  }
+
+  function setMode(next){
+    if(next===mode)return;
+    mode=next;answered=false;hint=false;noteText='';
+    feedbackText='';feedbackGood=false;answer.value='';
+    try{localStorage.setItem('anna_multiplication_chart_v1',JSON.stringify({mode:mode}));}catch(ignore){}
+    if(mode==='practice'&&!r)randomProblem();
+    else render();
+  }
+
+  board.addEventListener('click',function(event){
+    var button=event.target.closest('.anna-mc-cell');
+    if(button)choose(Number(button.dataset.r),Number(button.dataset.c));
+  });
+  modeButtons.forEach(function(button){
+    button.addEventListener('click',function(){setMode(button.dataset.mode);});
+  });
+  practice.addEventListener('submit',function(event){
+    event.preventDefault();
+    if(!r||answered)return;
+    var value=answer.value.trim();
+    feedbackGood=false;
+    if(!/^\d+$/.test(value)){
+      feedbackText='请先输入一个数。';
+    }else if(Number(value)===r*c){
+      answered=true;feedbackGood=true;
+      feedbackText='答对啦！'+r+'×'+c+'＝'+(r*c)+'，'+c+'组，每组'+r+'个';
+    }else{
+      feedbackText=hint?'再逐组数一数，试一次吧！':'再想一想，也可以点“看分组提示”。';
+    }
+    render();
+    if(!answered){if(answer.focus)answer.focus();if(answer.select)answer.select();}
+  });
+  hintButton.addEventListener('click',function(){
+    if(mode!=='practice'||!r||answered)return;
+    hint=true;feedbackGood=false;
+    feedbackText='提示已打开：每框一组，每组有 '+r+' 个点。';
+    render();
+  });
+  newButton.addEventListener('click',randomProblem);
+  swapButton.addEventListener('click',function(){
+    if(!r||r===c)return;
+    var oldR=r,oldC=c,product=r*c;
+    var keepAnswer=mode==='explore'||answered;
+    r=oldC;c=oldR;hint=false;
+    answered=mode==='practice'&&keepAnswer;
+    noteText='交换因数：'+oldR+'×'+oldC+' 和 '+r+'×'+c+' 的乘积相同。';
+    feedbackText=answered?'交换因数，乘积不变。':'';
+    feedbackGood=answered;
+    answer.value=answered?String(product):'';
+    render();
+  });
+
+  function onKeydown(event){
+    if(event.key==='Escape')close();
+  }
+  function open(){
+    if(!root.hidden)return;
+    lastFocus=document.activeElement;
+    root.hidden=false;
+    if(mode==='practice'&&!r)randomProblem();
+    else render();
+    document.addEventListener('keydown',onKeydown);
+    closeButton.focus({preventScroll:true});
+  }
+  function close(){
+    if(root.hidden)return;
+    root.hidden=true;
+    document.removeEventListener('keydown',onKeydown);
+    if(lastFocus&&lastFocus.isConnected&&typeof lastFocus.focus==='function')lastFocus.focus({preventScroll:true});
+  }
+  function isOpen(){return !root.hidden;}
+  function mountLauncher(parentOrSelector){
+    var parent=typeof parentOrSelector==='string'?document.querySelector(parentOrSelector):parentOrSelector;
+    if(!parent||typeof parent.appendChild!=='function')throw new Error('mountLauncher 需要有效的父元素或选择器');
+    var button=document.createElement('button');
+    button.type='button';
+    button.className='anna-mc-launcher';
+    button.textContent='乘法百数板';
+    button.setAttribute('aria-haspopup','dialog');
+    button.setAttribute('aria-controls','anna-mc-root');
+    button.addEventListener('click',open);
+    parent.appendChild(button);
+    return button;
+  }
+
+  closeButton.addEventListener('click',close);
+  root.addEventListener('click',function(event){if(event.target===root)close();});
+  render();
+  window.AnnaMultiplicationChart={open:open,close:close,isOpen:isOpen,mountLauncher:mountLauncher};
+})();
+</script>
+
+<script id="anna-mc-bootstrap">
+(function(){
+  function bind(){
+    var fab=document.getElementById('anna-mc-fab');
+    if(!fab || !window.AnnaMultiplicationChart) return;
+    fab.addEventListener('click', function(){ window.AnnaMultiplicationChart.open(); });
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', bind);
+  else bind();
+})();
+</script>
+
+</body>
+</html>
