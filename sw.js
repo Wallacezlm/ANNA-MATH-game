@@ -2,7 +2,7 @@
 // 本文件为模板：构建时 vite.config.ts 会把下方的预缓存清单占位符替换为全部构建产物清单，
 // 并把缓存版本占位符替换为版本号，输出到 dist/sw.js。
 // 单文件 HTML 离线版不会注册 Service Worker。
-const CACHE_NAME = 'anna-math-cache-2.2.0-groups-704592f326';
+const CACHE_NAME = 'anna-math-cache-2.3.0-levels-859ed44ca3';
 const PRECACHE_ASSETS = [
   "/",
   "/index.html",
@@ -10,7 +10,8 @@ const PRECACHE_ASSETS = [
   "/icons.svg",
   "/manifest.json",
   "/assets/index-2_2UvlOz.js",
-  "/assets/index-0siVSk6-.css"
+  "/assets/index-0siVSk6-.css",
+  "/src/new-levels.mjs"
 ];
 
 self.addEventListener('install', (event) => {
