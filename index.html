@@ -12,10 +12,20 @@
     <meta name="mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-    <meta name="apple-mobile-web-app-title" content="ANNA数学消消乐" />
+    <meta name="apple-mobile-web-app-title" content="数学消消乐" />
     <meta name="theme-color" content="#10B981" />
     <meta name="description" content="专为6-12岁小学生设计的数学消消乐游戏，包含加减乘除、永久翻牌与错题自动收集" />
-    <title>ANNA Math Match — 小学数学消消乐</title>
+    <title>数学消消乐</title>
+    <script>
+      if ('serviceWorker' in navigator) {
+        var hadController = !!navigator.serviceWorker.controller;
+        navigator.serviceWorker.addEventListener('controllerchange', function () {
+          if (!hadController || sessionStorage.getItem('sw-updated-once')) return;
+          sessionStorage.setItem('sw-updated-once', '1');
+          location.reload();
+        });
+      }
+    </script>
     <script type="module" crossorigin src="/assets/index-2_2UvlOz.js"></script>
     <link rel="stylesheet" crossorigin href="/assets/index-0siVSk6-.css">
   </head>
@@ -23,7 +33,7 @@
     <div id="root"></div>
   
 
-<!-- ANNA Multiplication Chart (Kimi module + mechanical launcher; Netlify site inject) -->
+<!-- 乘法百数板模块与入口按钮 -->
 <style id="anna-mc-fab-style">
 #anna-mc-fab{position:fixed;right:14px;bottom:14px;z-index:9998;min-height:52px;padding:12px 16px;border:0;border-radius:999px;background:#10B981;color:#fff;font:700 16px/1.2 system-ui,-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;box-shadow:0 10px 28px rgba(16,185,129,.45);cursor:pointer;touch-action:manipulation}
 #anna-mc-fab:active{transform:scale(.96)}
@@ -31,14 +41,14 @@
 <button type="button" id="anna-mc-fab" aria-label="打开乘法百数板">✖️ 乘法百数板</button>
 
 <style id="anna-mc-style">
-#anna-mc-root{position:fixed;inset:0;z-index:10000;display:flex;align-items:center;justify-content:center;padding:12px;background:rgba(15,23,42,.58);color:#0f172a;font-family:system-ui,-apple-system,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;line-height:1.5}
+#anna-mc-root{position:fixed;inset:0;z-index:10000;display:flex;align-items:center;justify-content:center;padding:max(12px,env(safe-area-inset-top,0px)) max(12px,env(safe-area-inset-right,0px)) max(12px,env(safe-area-inset-bottom,0px)) max(12px,env(safe-area-inset-left,0px));background:rgba(15,23,42,.58);color:#0f172a;font-family:system-ui,-apple-system,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;line-height:1.5}
 #anna-mc-root[hidden],#anna-mc-root [hidden]{display:none!important}
 #anna-mc-root *{box-sizing:border-box}
 #anna-mc-root button,#anna-mc-root input{font:inherit}
 #anna-mc-root button{min-height:44px;cursor:pointer;touch-action:manipulation}
 #anna-mc-root button:focus-visible,#anna-mc-root input:focus-visible{outline:3px solid #34d399;outline-offset:2px}
 #anna-mc-root button:disabled{cursor:default;opacity:.6}
-.anna-mc-panel{width:min(1180px,100%);max-height:96vh;max-height:96dvh;display:flex;flex-direction:column;overflow:hidden;background:#f8fafc;border:1px solid #cbd5e1;border-radius:20px;box-shadow:0 24px 70px rgba(15,23,42,.3)}
+.anna-mc-panel{width:min(1180px,100%);max-height:calc(100dvh - env(safe-area-inset-top,0px) - env(safe-area-inset-bottom,0px) - 24px);display:flex;flex-direction:column;overflow:hidden;background:#f8fafc;border:1px solid #cbd5e1;border-radius:20px;box-shadow:0 24px 70px rgba(15,23,42,.3)}
 .anna-mc-header{display:flex;align-items:center;gap:12px;padding:14px 18px;background:#fff;border-bottom:1px solid #e2e8f0}
 .anna-mc-header>div{flex:1}
 .anna-mc-title{margin:0;font-size:clamp(22px,3vw,30px);line-height:1.2;color:#065f46}
@@ -91,14 +101,14 @@
 .anna-mc-actions{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}
 .anna-mc-sr{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
 .anna-mc-launcher{border:1px solid #059669;background:#10B981;color:#fff;font-family:system-ui,-apple-system,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif}
-@media(max-width:800px){#anna-mc-root{padding:6px}.anna-mc-panel{max-height:calc(100dvh - 12px);border-radius:15px}.anna-mc-header{padding:11px 12px}.anna-mc-main{padding:10px}.anna-mc-layout{grid-template-columns:1fr}.anna-mc-board-scroll{max-height:55vh}.anna-mc-detail{padding:14px}}
+@media(max-width:800px){.anna-mc-panel{border-radius:15px}.anna-mc-header{padding:12px 12px 11px}.anna-mc-main{padding:10px}.anna-mc-layout{grid-template-columns:1fr}.anna-mc-board-scroll{max-height:55vh}.anna-mc-detail{padding:14px}}
 </style>
 <div id="anna-mc-root" hidden>
   <section class="anna-mc-panel" role="dialog" aria-modal="true" aria-labelledby="anna-mc-title">
     <header class="anna-mc-header">
       <div>
         <h2 class="anna-mc-title" id="anna-mc-title">乘法百数板</h2>
-        <p class="anna-mc-subtitle">行是组数，列是每组个数。点一格，看看乘法是什么意思。</p>
+        <p class="anna-mc-subtitle">a×b 表示 b 组、每组 a 个。行是每组个数，列是组数。</p>
       </div>
       <button type="button" class="anna-mc-close" id="anna-mc-close" aria-label="关闭乘法百数板">×</button>
     </header>
@@ -175,12 +185,12 @@
     if(saved.mode==='practice')mode='practice';
   }catch(ignore){}
 
-  var html='<caption class="anna-mc-sr">行表示组数，列表示每组个数，格内是乘积</caption><thead><tr><th class="anna-mc-corner" scope="col" aria-label="乘号">×</th>';
+  var html='<caption class="anna-mc-sr">行是每组个数，列是组数。a×b 表示 b 组、每组 a 个，格内是乘积</caption><thead><tr><th class="anna-mc-corner" scope="col" aria-label="每组个数乘以组数">×</th>';
   var i,j;
-  for(j=1;j<=10;j++)html+='<th scope="col" data-col-head="'+j+'">'+j+'</th>';
+  for(j=1;j<=10;j++)html+='<th scope="col" data-col-head="'+j+'" aria-label="'+j+'组">'+j+'</th>';
   html+='</tr></thead><tbody>';
   for(i=1;i<=10;i++){
-    html+='<tr><th scope="row" data-row-head="'+i+'">'+i+'</th>';
+    html+='<tr><th scope="row" data-row-head="'+i+'" aria-label="每组'+i+'个">'+i+'</th>';
     for(j=1;j<=10;j++){
       html+='<td><button type="button" class="anna-mc-cell" data-r="'+i+'" data-c="'+j+'" aria-pressed="false"><span class="anna-mc-product">'+(i*j)+'</span></button></td>';
     }
@@ -195,13 +205,13 @@
     dots.replaceChildren();
     dots.classList.toggle('anna-mc-hint-dots',isHint);
     dots.setAttribute('role','img');
-    dots.setAttribute('aria-label',isHint?r+'组，每组'+c+'个圆点的分组提示':r+'组，每组'+c+'个圆点，共'+(r*c)+'个圆点');
+    dots.setAttribute('aria-label',isHint?c+'组，每组'+r+'个圆点的分组提示':c+'组，每组'+r+'个圆点，共'+(r*c)+'个圆点');
     var fragment=document.createDocumentFragment();
-    for(var groupIndex=0;groupIndex<r;groupIndex++){
+    for(var groupIndex=0;groupIndex<c;groupIndex++){
       var group=document.createElement('span');
       group.className='anna-mc-dot-group';
       group.setAttribute('aria-hidden','true');
-      for(var dotIndex=0;dotIndex<c;dotIndex++){
+      for(var dotIndex=0;dotIndex<r;dotIndex++){
         var dot=document.createElement('span');
         dot.className='anna-mc-dot';
         group.appendChild(dot);
@@ -235,7 +245,7 @@
     empty.textContent=mode==='practice'?'点一格开始练习，或准备随机抽题。':'先在乘法表中点一格吧！';
     if(!hasSelection)return;
 
-    groupsText.textContent=r+'组，每组'+c+'个';
+    groupsText.textContent=c+'组，每组'+r+'个';
     equation.textContent=r+'×'+c+(showAnswer?'＝'+(r*c):'＝？');
     note.hidden=!noteText;
     note.textContent=noteText;
@@ -251,11 +261,11 @@
     feedback.classList.toggle('anna-mc-good',feedbackGood);
 
     repeat.hidden=!showAnswer;
-    repeat.textContent=showAnswer?(r===1?'就是 '+c+'，只有 1 组。':Array(r).fill(c).join('＋')+'＝'+(r*c)):'';
+    repeat.textContent=showAnswer?(c===1?'就是 '+r+'，只有 1 组。':Array(c).fill(r).join('＋')+'＝'+(r*c)):'';
     dotsTitle.hidden=!(showAnswer||showHint);
     dots.hidden=!(showAnswer||showHint);
     if(showAnswer){
-      dotsTitle.textContent='圆点图：'+r+' 个独立分组，每框一组';
+      dotsTitle.textContent='圆点图：'+c+' 个独立分组，每框一组';
       renderDots(false);
     }else if(showHint){
       dotsTitle.textContent='分组提示：每框一组，可以逐组数一数（暂不写乘积）';
@@ -306,7 +316,7 @@
       feedbackText='请先输入一个数。';
     }else if(Number(value)===r*c){
       answered=true;feedbackGood=true;
-      feedbackText='答对啦！'+r+'×'+c+'＝'+(r*c);
+      feedbackText='答对啦！'+r+'×'+c+'＝'+(r*c)+'，'+c+'组，每组'+r+'个';
     }else{
       feedbackText=hint?'再逐组数一数，试一次吧！':'再想一想，也可以点“看分组提示”。';
     }
@@ -316,7 +326,7 @@
   hintButton.addEventListener('click',function(){
     if(mode!=='practice'||!r||answered)return;
     hint=true;feedbackGood=false;
-    feedbackText='提示已打开：每框一组，每组有 '+c+' 个点。';
+    feedbackText='提示已打开：每框一组，每组有 '+r+' 个点。';
     render();
   });
   newButton.addEventListener('click',randomProblem);

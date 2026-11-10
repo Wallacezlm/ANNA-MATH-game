@@ -1,4 +1,5 @@
-ANNA Math Match Netlify update package
-CACHE_NAME: anna-math-cache-2.0.0-025eb9527f -> anna-math-cache-2.1.0-mult-ba42d10a42
-Injected: multiplication chart module into index.html
-Do not nest this folder inside another dist/ when uploading to Netlify.
+数学消消乐静态更新说明
+CACHE_NAME: anna-math-cache-2.1.0-mult-ba42d10a42 -> anna-math-cache-2.2.0-groups-704592f326
+乘法约定: a×b 表示 b 组、每组 a 个。
+访客可见名称改为数学消消乐。本地存储键未改。
+上传时使用站点根目录，不要再套一层 dist。

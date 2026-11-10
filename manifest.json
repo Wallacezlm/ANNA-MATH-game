@@ -1,6 +1,6 @@
 {
-  "name": "ANNA Math Match — 小学数学消消乐",
-  "short_name": "ANNA数学消消乐",
+  "name": "数学消消乐",
+  "short_name": "数学消消乐",
   "description": "专为6-12岁小学生设计的儿童益智数学配对消除游戏",
   "start_url": "/",
   "display": "standalone",

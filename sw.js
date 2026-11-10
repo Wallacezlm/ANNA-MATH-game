@@ -1,8 +1,8 @@
-// ANNA Math Match Service Worker (Offline Support) — PWA 网站版专用
+// 数学消消乐 Service Worker (Offline Support) — PWA 网站版专用
 // 本文件为模板：构建时 vite.config.ts 会把下方的预缓存清单占位符替换为全部构建产物清单，
 // 并把缓存版本占位符替换为版本号，输出到 dist/sw.js。
 // 单文件 HTML 离线版不会注册 Service Worker。
-const CACHE_NAME = 'anna-math-cache-2.1.0-mult-ba42d10a42';
+const CACHE_NAME = 'anna-math-cache-2.2.0-groups-704592f326';
 const PRECACHE_ASSETS = [
   "/",
   "/index.html",
@@ -37,6 +37,9 @@ self.addEventListener('activate', (event) => {
 self.addEventListener('fetch', (event) => {
   // Only handle GET requests
   if (event.request.method !== 'GET') return;
+
+  // 安装新缓存时使用 cache:'reload'。这里若仍返回旧缓存，已安装访客会把旧文件写进新缓存。
+  if (event.request.cache === 'reload') return;
 
   const url = new URL(event.request.url);
   if (url.origin !== self.location.origin) return;
